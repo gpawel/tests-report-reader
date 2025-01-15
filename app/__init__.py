@@ -1,0 +1,1 @@
+print("\n\nFROM INIT")
