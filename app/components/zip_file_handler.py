@@ -4,6 +4,11 @@ import shutil
 import time
 
 
+def get_temp_folder():
+    rnd = round(time.time() * 1000)
+    return "temp" + str(rnd)
+
+
 class ZipArchive:
 
     def __init__(self, file_to_unzip: str):
@@ -13,8 +18,8 @@ class ZipArchive:
     def unzip(self, tmp_fldr='') -> str:
         zipper = ZipFile(self.file_to_unzip, "r")
         if tmp_fldr == '':
-            tmp_fldr = self.__get_temp_folder()
-        self.temp_folder = tmp_fldr
+            tmp_fldr = get_temp_folder()
+        self.temp_folder = os.path.join(os.path.dirname(self.file_to_unzip), tmp_fldr)
         zipper.extractall(self.temp_folder)
         return self.temp_folder
 
@@ -29,6 +34,4 @@ class ZipArchive:
     def get_temp_folder(self) -> str:
         return self.temp_folder
 
-    def __get_temp_folder(self):
-        rnd = round(time.time() * 1000)
-        return os.path.dirname(self.file_to_unzip) + os.sep + "temp" + str(rnd)
+
