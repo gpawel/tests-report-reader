@@ -7,12 +7,14 @@ import time
 class ZipArchive:
 
     def __init__(self, file_to_unzip: str):
+        self.temp_folder = None
         self.file_to_unzip = file_to_unzip
-        rnd = round(time.time() * 1000)
-        self.temp_folder = os.path.dirname(self.file_to_unzip) + os.sep + "temp" + str(rnd)
 
-    def unzip_file(self) -> str:
+    def unzip(self, tmp_fldr='') -> str:
         zipper = ZipFile(self.file_to_unzip, "r")
+        if tmp_fldr == '':
+            tmp_fldr = self.__get_temp_folder()
+        self.temp_folder = tmp_fldr
         zipper.extractall(self.temp_folder)
         return self.temp_folder
 
@@ -26,3 +28,7 @@ class ZipArchive:
 
     def get_temp_folder(self) -> str:
         return self.temp_folder
+
+    def __get_temp_folder(self):
+        rnd = round(time.time() * 1000)
+        return os.path.dirname(self.file_to_unzip) + os.sep + "temp" + str(rnd)
