@@ -19,10 +19,10 @@ def test_zips_folder_path():
 
 
 def __check_zip_file_extraction(folder_name = '' ):
-    file_name = "demo.zip"
-    file_path = os.path.join(ZIPS_ROOT, file_name)
-    print("\nFILE PATH: " + file_path)
-    archive = ZipArchive(file_path)
+    # file_name = "demo.zip"
+    # file_path = os.path.join(ZIPS_ROOT, file_name)
+    # print("\nFILE PATH: " + file_path)
+    archive = ZipArchive(ZIP_FILE_PATH)
     temp = os.path.join(ZIPS_ROOT, archive.unzip(folder_name))
     assert os.path.exists(temp)
     assert os.path.isdir(temp)
