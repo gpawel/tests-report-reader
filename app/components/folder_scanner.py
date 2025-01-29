@@ -13,8 +13,7 @@ def use_os_walk(root_folder: str, file_to_find: str):
                     print(f"filenames: {os.path.join(os.path.join(dirpath, dir_name), file_name)} ")
 
 
-def use_os_scandir(root_folder: str, file_to_find: str, found=""):
-
+def use_os_scandir(root_folder: str, file_to_find: str, found=[]):
     print(f"scanning {root_folder}")
     for entry in os.scandir(root_folder):
         print(f"    entry: {entry.path}")
@@ -23,12 +22,11 @@ def use_os_scandir(root_folder: str, file_to_find: str, found=""):
             print(f"    file part: {file_part}")
             if file_part == file_to_find:
                 print(f"FILE IS FOUND: {file_part}")
-                return os.path.join(root_folder, file_to_find)
-        elif entry.is_dir():
-            found = use_os_scandir(entry.path, file_to_find, found)
-            if len(found) > 0:
+                found.append(os.path.join(root_folder, file_to_find))
                 return found
-    return None
+        elif entry.is_dir():
+            use_os_scandir(entry.path, file_to_find, found)
+    return found
 
 
 class FolderScanner:
