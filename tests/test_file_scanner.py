@@ -22,7 +22,18 @@ class TestFileScanner:
         print(f"\nfile to find {self.file_to_find}")
         self.scanner.find_files_using_walk(self.file_to_find)
 
-    def test_find_file_using_scandir(self):
+    def test_find_file_using_scandir_equal(self):
         print(f"\nfile to find {self.file_to_find}")
-        found = self.scanner.find_file_using_scandir(self.file_to_find)
+        found = self.scanner.find_file_using_scandir_equal(self.file_to_find)
+        print(f"\nThe following found: {found}")
+
+    def test_find_file_using_scandir_contains_full_name(self):
+        print(f"\nfile to find {self.file_to_find}")
+        found = self.scanner.find_file_using_scandir_contains(self.file_to_find)
+        print(f"\nThe following found: {found}")
+
+    def test_find_file_using_scandir_contains_part(self):
+        self.file_to_find = "moApplica"
+        print(f"\nfile to find {self.file_to_find}")
+        found = self.scanner.find_file_using_scandir_contains(self.file_to_find)
         print(f"\nThe following found: {found}")
