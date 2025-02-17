@@ -1,5 +1,6 @@
 import os
 import filecmp
+from app.components.zip_file_handler import ZipArchive
 
 
 def use_os_walk(root_folder: str, file_to_find: str):
@@ -22,19 +23,33 @@ def use_os_scandir_contains(root_folder: str, file_to_find: str, found=[]):
 
 
 def use_os_scandir_gen(root_folder: str, file_to_find: str, comparison_function, found=[]):
-    print(f"scanning {root_folder}")
+    result = []
     for entry in os.scandir(root_folder):
-        print(f"    entry: {entry.path}")
         if entry.is_file():
             folder, file_part = os.path.split(entry.path)
-            print(f"    file part: {file_part}")
+            if file_part.endswith(".zip"):
+                process_zip_archive(entry, file_to_find, comparison_function, result)
+                if len(result) > 0:
+                    print(f"--> {result}")
+                    found.append( result )
             if comparison_function(file_to_find, file_part):
-                print(f"FILE IS FOUND: {file_part}")
-                found.append(os.path.join(root_folder, file_to_find))
-                return found
+                print(f"ROOT FOLDER --> {root_folder}")
+                found.append( os.path.join(root_folder, file_part) )
         elif entry.is_dir():
-            use_os_scandir_gen(entry.path, file_to_find, comparison_function, found)
+            use_os_scandir_gen( entry.path, file_to_find, comparison_function, result)
     return found
+
+
+
+
+def process_zip_archive(zip_file, file_to_find, comparison_function, found):
+    archive = ZipArchive(zip_file)
+    print(f"UNZIPING {zip_file}")
+    temp = os.path.join(zip_file.path, archive.unzip())
+    print(f"TEMP FOLDER: {temp}")
+    result = use_os_scandir_gen(temp, file_to_find, comparison_function, found)
+    archive.remove_temp_folder()
+    return result
 
 
 def __is_equal(s_1:str, s_2:str):
