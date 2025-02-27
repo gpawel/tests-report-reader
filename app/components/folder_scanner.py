@@ -104,11 +104,12 @@ class FolderScanner:
     def find_file_using_scandir_contains(self, file_name):
         return use_os_scandir_contains(self.folder, file_name)
 
-    def collect_report_data_searching_file_using_equal_comparison(self, file_name):
-        return collect_data_using_equal_comparison(self.folder, file_name, DataCollector('//testsuite'))
+    def collect_report_data_searching_file_using_equal_comparison(self, file_name, data_collector: DataCollector):
+        return collect_data_using_equal_comparison(self.folder, file_name, data_collector)
 
-    def collect_report_data_searching_using_contains_check(self, file_name):
-        return collect_data_using_contains_check(self.folder, file_name, DataCollector('//testsuite'))
+# DataCollector('//testsuite')
+    def collect_report_data_searching_using_contains_check(self, file_name, data_collector: DataCollector):
+        return collect_data_using_contains_check(self.folder, file_name, data_collector)
 
 
 
